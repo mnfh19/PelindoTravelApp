@@ -188,9 +188,6 @@
         <p class="mb-4">Pengguna dapat menambah jadwal kapal baru, terdapat 3 tahapan yang harus di inputkan untuk
             menambah jadwal baru.</p>
 
-
-
-
         <div class="row">
 
             <div class="col-lg-12">
@@ -207,6 +204,10 @@
                             </div>
                         </div>
 
+
+
+
+
                         <fieldset>
                             <div class="col-lg-12 mb-6">
                                 <div class="card shadow mb-4">
@@ -216,48 +217,44 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label>Pilih Kapal</label>
-                                            <select class="form-control" id="">
-                                                <option>
-                                                    Pelni
-                                                </option>
-                                                <option>
-                                                    Makasar ⇆ Surabaya
-                                                </option>
+                                            <select class="form-control pilihKapal" name="id_kapal">
+                                                <option disabled selected hidden>Pilih Kapal</option>
+                                                @foreach ($kapal as $d)
+                                                    <option value="{{ $d->id_kapal }}"
+                                                        data-jenis="{{ $d->jenis_kapal }}">
+                                                        {{ $d->nama_kapal }} -
+                                                        {{ $d->KM }} ({{ $d->rute_awal }} ⇆ {{ $d->rute_akhir }})
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
+
                                         <div class="form-group">
-                                            <label>Pilih KM</label>
-                                            <select class="form-control" id="">
-                                                <option>
-                                                    KM. Dorolongga
-                                                </option>
-                                                <option>
-                                                    KM. Bismarck
-                                                </option>
-                                            </select>
+                                            <label>Tanggal Berangkat</label>
+                                            <input type="date" class="form-control" name="tgl_berangkat" placeholder="">
                                         </div>
                                         <div class="form-group">
-                                            <label>Tgl Berangkat</label>
-                                            <input type="date" class="form-control" id="" placeholder="">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Tgl Tiba</label>
-                                            <input type="date" class="form-control" id="" placeholder="">
+                                            <label>Tanggal Tiba</label>
+                                            <input type="date" class="form-control" name="tgl_tiba" placeholder="">
                                         </div>
                                         <div class="form-group">
                                             <label>Jam Berangkat</label>
-                                            <input type="time" class="form-control" id="" placeholder="">
+                                            <input type="time" class="form-control" name="jam_berangkat" placeholder="">
                                         </div>
                                         <div class="form-group">
                                             <label>Jam Tiba</label>
-                                            <input type="time" class="form-control" id="" placeholder="">
+                                            <input type="time" class="form-control" name="jam_tiba" placeholder="">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <input type="button" name="next" class="next action-button" value="Next" />
+                            <input type="button" name="next" class="next action-button checkForm" value="Next" />
                         </fieldset>
                         <fieldset>
+                            <div class="alert alert-danger kendaraanAlert" style="display: none">
+                                <span class="alert-text">Anda Memilih Jenis Kapal Kendaraan, Silahkan lewati Form ini</span>
+                            </div>
+                            <br>
                             <div class="col-lg-12 mb-6">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
@@ -277,72 +274,64 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="form-group row mb-5">
-                                            <label class="col-sm-12 col-form-label"><strong>Jenis Tiket 1</strong></label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="" value=""
-                                                    placeholder="Kelas Tiket">
+                                            <div class="col-md-3">
+                                                <label class="col-form-label mb-6">Kelas Tiket</label>
+                                                <input type="text" class="form-control" id="kelas" value="">
                                             </div>
-                                            <div class="col-sm-6">
-                                                <input type="number" class="form-control" id="" value=""
-                                                    placeholder="Jumlah Tiket Tiket">
+                                            <div class="col-md-2">
+                                                <label class="col-form-label mb-6">Jumlah Tiket</label>
+                                                <input type="number" class="form-control" id="jumlah" value="">
                                             </div>
-                                            <label class="col-sm-12 col-form-label mb-6">Harga</label>
-                                            <div class="col-sm-6">
+
+                                            <div class="col-md-3">
+                                                <label class="col-form-label mb-6">Harga Tiket Balita</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">Rp</span>
                                                     </div>
-                                                    <input type="number" class="form-control" placeholder="Balita"
+                                                    <input type="number" id="balita" class="form-control"
                                                         aria-label="Balita" aria-describedby="basic-addon1">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-md-3">
+                                                <label class="col-form-label mb-6">Harga Tiket Dewasa</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">Rp</span>
                                                     </div>
-                                                    <input type="number" class="form-control" placeholder="Dewasa"
+                                                    <input type="number" id="dewasa" class="form-control"
                                                         aria-label="Dewasa" aria-describedby="basic-addon1">
                                                 </div>
                                             </div>
+                                            <div class="col-md-1">
+                                                <label class="col-form-label mb-6 text-white">a</label>
+                                                <br>
+                                                <button type="button" id="tambahTiketPenumpang"
+                                                    class="btn btn-success btn-icon-split">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-plus"></i>
+                                                    </span>
+                                                    <span class="text">Tambah</span>
+                                                </button>
+                                            </div>
+
                                         </div>
-                                        <hr class="sidebar-divider">
-                                        <div class="form-group row mb-5">
-                                            <label class="col-sm-12 col-form-label"><strong>Jenis Tiket 2</strong></label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="" value=""
-                                                    placeholder="Kelas Tiket">
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <input type="number" class="form-control" id="" value=""
-                                                    placeholder="Jumlah Tiket Tiket">
-                                            </div>
-                                            <label class="col-sm-12 col-form-label mb-6">Harga</label>
-                                            <div class="col-sm-6">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">Rp</span>
-                                                    </div>
-                                                    <input type="number" class="form-control" placeholder="Balita"
-                                                        aria-label="Balita" aria-describedby="basic-addon1">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">Rp</span>
-                                                    </div>
-                                                    <input type="number" class="form-control" placeholder="Dewasa"
-                                                        aria-label="Dewasa" aria-describedby="basic-addon1">
-                                                </div>
-                                            </div>
-                                        </div>
+
+                                        <h3 class="titleTiketPenumpang" style="display: none;">Daftar Tiket</h3>
+                                        <div class="loopTiketPenumpang" id="loopTiketPenumpang"> </div>
+
+
                                     </div>
                                 </div>
                             </div> <input type="button" name="next" class="next action-button" value="Next" /> <input
                                 type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <fieldset>
+                            <div class="alert alert-danger penumpangAlert" style="display: none">
+                                <span class="alert-text">Anda Memilih Jenis Kapal Penumpang, Silahkan lewati Form
+                                    ini</span>
+                            </div>
+                            <br>
                             <div class="col-lg-12 mb-6">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
@@ -350,63 +339,57 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="form-group row mb-5">
-                                            <label class="col-sm-12 col-form-label"><strong>Jenis Tiket Kendaraan
-                                                    1</strong></label>
-                                            <div class="col-sm-4">
-                                                <select class="form-control" id="">
+                                            <div class="col-md-4">
+                                                <label class="col-form-label mb-6">Jenis Kendaraan</label>
+                                                <select class="form-control" id="jenisKendaraan">
                                                     <option hidden>Pilih Jenis Kendaraan</option>
-                                                    <option>Sepeda Motor</option>
-                                                    <option> Mobil</option>
+                                                    <option value="Sepeda Motor 2.A (s.d 249CC)">Sepeda Motor 2.A (s.d
+                                                        249CC)</option>
+                                                    <option value="Truk Sedang 4.B (Kosong)">Truk Sedang 4.B (Kosong)
+                                                    </option>
+                                                    <option value="Truk Sedang 4.B">Truk Sedang 4.B</option>
+                                                    <option value="Kend. Kecil 3.A (s.d 2000CC)">Kend. Kecil 3.A (s.d
+                                                        2000CC)</option>
+                                                    <option value="Kend. Kecil 3.B (2001CC ke Atas)"> Kend. Kecil 3.B
+                                                        (2001CC ke Atas)</option>
                                                 </select>
                                             </div>
-                                            <div class="col-sm-4">
-                                                <input type="number" class="form-control" id="" value=""
-                                                    placeholder="Jumlah Tiket">
+                                            <div class="col-md-3">
+                                                <label class="col-form-label mb-6">Jumlah Tiket</label>
+                                                <input type="number" class="form-control" id="jumlahKendaraan" value="">
                                             </div>
-                                            <div class="col-sm-4">
+
+                                            <div class="col-md-4">
+                                                <label class="col-form-label mb-6">Harga Tiket</label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">Rp</span>
                                                     </div>
-                                                    <input type="number" class="form-control" placeholder="Harga"
+                                                    <input type="number" class="form-control" id="hargaKendaraan"
                                                         aria-label="Harga" aria-describedby="basic-addon1">
                                                 </div>
                                             </div>
-
-                                        </div>
-                                        <hr class="sidebar-divider">
-                                        <div class="form-group row mb-5">
-                                            <label class="col-sm-12 col-form-label"><strong>Jenis Tiket Kendaraan
-                                                    2</strong></label>
-                                            <div class="col-sm-4">
-                                                <select class="form-control" id="">
-                                                    <option hidden>Pilih Jenis Kendaraan</option>
-                                                    <option>Sepeda Motor</option>
-                                                    <option> Mobil</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <input type="number" class="form-control" id="" value=""
-                                                    placeholder="Jumlah Tiket">
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">Rp</span>
-                                                    </div>
-                                                    <input type="number" class="form-control" placeholder="Harga"
-                                                        aria-label="Harga" aria-describedby="basic-addon1">
-                                                </div>
+                                            <div class="col-md-1">
+                                                <label class="col-form-label mb-6 text-white">a</label>
+                                                <br>
+                                                <button type="button" id="tambahTiketKendaraan"
+                                                    class="btn btn-success btn-icon-split">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-plus"></i>
+                                                    </span>
+                                                    <span class="text">Tambah</span>
+                                                </button>
                                             </div>
 
                                         </div>
-                                        <hr class="sidebar-divider">
+                                        <h3 class="titleTiketKendaraan" style="display: none;">Daftar Tiket</h3>
+                                        <div class="loopTiketKendaraan" id="loopTiketKendaraan"> </div>
 
                                     </div>
                                 </div>
                             </div>
-                            <input type="button" class="submit action-button" value="Submit" /> <input
-                                type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            <input type="button" class="submit action-button" value="Submit" /> <input type="button"
+                                name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
 
                     </form>
@@ -421,6 +404,92 @@
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.3/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+
+
+
+    <script id="loop-penumpang" type="text/x-handlebars-template">
+        <div class="form-group row mb-3 hapusRowPenumpang">
+                                            <div class="col-md-3">
+                                                <label class="col-form-label mb-6">Kelas Tiket</label>
+                                                <input type="text" class="form-control" value="@{{ kelas }}" name="kelas_penumpang[]">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="col-form-label mb-6">Jumlah Tiket</label>
+                                                <input type="number" class="form-control" value="@{{ jumlah }}"
+                                                    placeholder="Jumlah Tiket Tiket" name="jumlah_penumpang[]">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="col-form-label mb-6">Harga Tiket Balita</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Rp</span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        aria-label="Balita" aria-describedby="basic-addon1" value="@{{ balita }}" name="balita_penumpang[]">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="col-form-label mb-6">Harga Tiket Dewasa</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Rp</span>
+                                                    </div>
+                                                    <input type="number"  class="form-control"
+                                                        aria-label="Dewasa" aria-describedby="basic-addon1" value="@{{ dewasa }}" name="dewasa_penumpang[]">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="col-form-label mb-6 text-white">a</label>
+                                                <br>
+                                                <button type="button" id="hapusPenumpang" class="btn btn-danger btn-icon-split hapusPenumpang">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-times"></i>
+                                                    </span>
+                                                    <span class="text">Hapus</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </script>
+
+
+
+    <script id="loop-kendaraan" type="text/x-handlebars-template">
+        <div class="form-group row mb-5 hapusRowKendaraan">
+                                        <div class="col-md-4">
+                                            <label class="col-form-label mb-6">Jenis Kendaraan</label>
+                                            <select class="form-control" name="jenis_kendaraan[]">
+                                                <option value="@{{ jenis }}" selected>@{{ jenis }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label mb-6">Jumlah Tiket</label>
+                                            <input type="number" class="form-control" name="jumlah_kendaraan[]" value="@{{ jumlah }}">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="col-form-label mb-6">Harga Tiket</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Rp</span>
+                                                </div>
+                                                <input type="number" class="form-control" name="harga_kendaraan[]"
+                                                    aria-label="Harga" aria-describedby="basic-addon1" value="@{{ harga }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label class="col-form-label mb-6 text-white">a</label>
+                                            <br>
+                                            <button type="button" id="hapusKendaraan" class="btn btn-danger btn-icon-split hapusKendaraan">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-times"></i>
+                                                </span>
+                                                <span class="text">Hapus</span>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </script>
 
     <script>
         $(document).ready(function() {
@@ -504,7 +573,103 @@
                     .css("width", percent + "%")
             }
 
+            $(document).on('click', '#tambahTiketPenumpang', function(e) {
+                e.preventDefault();
+                $(".titleTiketPenumpang").show();
+
+                var kelas = $("#kelas").val();
+                var jumlah = $("#jumlah").val();
+                var dewasa = $("#dewasa").val();
+                var balita = $("#balita").val();
+                var source = $("#loop-penumpang").html();
+                var template = Handlebars.compile(source);
+
+                var data = {
+                    kelas: kelas,
+                    jumlah: jumlah,
+                    dewasa: dewasa,
+                    balita: balita,
+                }
+
+                var html = template(data);
+                $("#loopTiketPenumpang").append(html);
+                $("#kelas").val("");
+                $("#jumlah").val("");
+                $("#dewasa").val("");
+                $("#balita").val("");
+
+            });
+
+            $(document).on('click', '.hapusPenumpang', function(event) {
+                $(this).closest('.hapusRowPenumpang').remove();
+
+            });
+
+
+            $(document).on('click', '#tambahTiketKendaraan', function(e) {
+                e.preventDefault();
+                $(".titleTiketKendaraan").show();
+
+                var jenis = $("#jenisKendaraan").val();
+                var jumlah = $("#jumlahKendaraan").val();
+                var harga = $("#hargaKendaraan").val();
+                var source = $("#loop-kendaraan").html();
+                var template = Handlebars.compile(source);
+
+                var data = {
+                    jenis: jenis,
+                    jumlah: jumlah,
+                    harga: harga,
+                }
+
+                var html = template(data);
+                $("#loopTiketKendaraan").append(html);
+                $("#jumlahKendaraan").val("");
+                $("#hargaKendaraan").val("");
+                $("#jenisKendaraan").val("");
+            });
+
+            $(document).on('click', '.hapusKendaraan', function(event) {
+                $(this).closest('.hapusRowKendaraan').remove();
+
+            });
+
             $(".submit").click(function() {
+                var id = "asd";
+
+                //first form
+                var id_kapal = $('select[name="id_kapal"]').val();
+                var tgl_berangkat = $('input[name="tgl_berangkat"]').val();
+                var tgl_tiba = $('input[name="tgl_tiba"]').val();
+                var jam_berangkat = $('input[name="jam_berangkat"]').val();
+                var jam_tiba = $('input[name="jam_tiba"]').val();
+
+                //second form
+                var kelas_penumpang = $('input[name="kelas_penumpang[]"]').map(function() {
+                    return this.value;
+                }).get();
+                var jumlah_penumpang = $('input[name="jumlah_penumpang[]"]').map(function() {
+                    return this.value;
+                }).get();
+                var balita_penumpang = $('input[name="balita_penumpang[]"]').map(function() {
+                    return this.value;
+                }).get();
+                var dewasa_penumpang = $('input[name="dewasa_penumpang[]"]').map(function() {
+                    return this.value;
+                }).get();
+
+
+                //third form
+                var jenis_kendaraan = $('select[name="jenis_kendaraan[]"]').map(function() {
+                    return this.value;
+                }).get();
+                var jumlah_kendaraan = $('input[name="jumlah_kendaraan[]"]').map(function() {
+                    return this.value;
+                }).get();
+                var harga_kendaraan = $('input[name="harga_kendaraan[]"]').map(function() {
+                    return this.value;
+                }).get();
+
                 Swal.fire({
                     title: 'Apakah anda yakin ingin menambah data ?',
                     text: "Silahkan Cek Kembali data yang diinputkan, apakah sudah lengkap atau belum !",
@@ -514,15 +679,65 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Sudah lengkap!'
                 }).then((result) => {
+
                     if (result.isConfirmed) {
-                        Swal.fire(
-                            'Sukses !',
-                            'Berhasil Tambah Jadwal Baru.',
-                            'success'
-                        )
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            type: 'POST',
+                            url: "{{ route('jadwal.store') }}",
+                            data: {
+                                id_kapal: id_kapal,
+                                tgl_berangkat: tgl_berangkat,
+                                tgl_tiba: tgl_tiba,
+                                jam_berangkat: jam_berangkat,
+                                jam_tiba: jam_tiba,
+                                kelas_penumpang: kelas_penumpang,
+                                jumlah_penumpang: jumlah_penumpang,
+                                balita_penumpang: balita_penumpang,
+                                dewasa_penumpang: dewasa_penumpang,
+                                jenis_kendaraan: jenis_kendaraan,
+                                jumlah_kendaraan: jumlah_kendaraan,
+                                harga_kendaraan: harga_kendaraan,
+                            },
+                            success: function(res) {
+                                Swal.fire({
+                                    title: "Sukses",
+                                    text: "Data Berhasil Ditambahkan !",
+                                    type: "success",
+                                    icon: "success",
+                                }).then((result) => {
+                                    // Reload the Page
+                                    location.reload();
+                                });
+
+                            }
+                        });
                     }
                 })
-            })
+            });
+
+            $(".checkForm").on('click', function() {
+                var dat = $(".pilihKapal").find(':selected').data('jenis');
+
+                switch (dat) {
+                    case "Penumpang":
+                        $(".penumpangAlert").show();
+                        $(".kendaraanAlert").hide();
+                        break;
+                    case "Kendaraan":
+                        $(".kendaraanAlert").show();
+                        $(".penumpangAlert").hide();
+                        break;
+
+                    default:
+                    $(".kendaraanAlert").hide();
+                        $(".penumpangAlert").hide();
+                        break;
+                }
+
+            });
 
         });
     </script>

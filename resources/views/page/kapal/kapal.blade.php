@@ -4,14 +4,6 @@
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @endsection
 
-@section('js')
-    <!-- Page level plugins -->
-    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
-@endsection
 
 @section('content')
     <div class="container-fluid">
@@ -27,7 +19,7 @@
                     nisi. Curabitur nec diam ut massa auctor maximus nec non sem.</p>
             </div>
             <div class="col-lg-2">
-                <a href="{{ url('add_kapal') }}" class="btn btn-primary btn-icon-split float-right">
+                <a href="{{ Route('kapal.create') }}" class="btn btn-primary btn-icon-split float-right">
                     <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
                     </span>
@@ -49,9 +41,9 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>KM</th>
-                                <th>Nama Pemilik</th>
+                                <th>Nama Kapal</th>
                                 <th>Rute</th>
                                 <th>Jenis Kapal</th>
                                 <th>Muatan</th>
@@ -61,9 +53,9 @@
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>KM</th>
-                                <th>Nama Pemilik</th>
+                                <th>Nama Kapal</th>
                                 <th>Rute</th>
                                 <th>Jenis Kapal</th>
                                 <th>Muatan</th>
@@ -72,35 +64,45 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>KM. Dorolongga</td>
-                                <td>Dharma Lautan Utama</td>
-                                <td>Surabaya
-                                    <span class="icon text-grey">
-                                        <i class="fas fa-exchange-alt"></i>
-                                    </span>
-                                    Makasar
-                                </td>
-                                <td>Penumpang</td>
-                                <td>5000</td>
-                                <td><a href="#" class="btn btn-primary">
-                                        <span class="text">Aktif</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="#" class="btn btn-info">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-pen"></i>
+                            @foreach ($get as $d)
+                                <tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$d->KM}}</td>
+                                    <td>{{$d->nama_kapal}}</td>
+                                    <td>{{$d->rute_awal}}
+                                        <span class="icon text-grey">
+                                            <i class="fas fa-exchange-alt"></i>
                                         </span>
-                                    </a>
-                                    <a href="#" class="btn btn-danger">
-                                        <span class="icon text-white">
+                                        {{$d->rute_akhir}}
+                                    </td>
+                                    <td>{{$d->jenis_kapal}}</td>
+                                    <td>{{$d->muatan}}</td>
+                                    <td><a href="#" class="btn btn-primary">
+                                            <span class="text">
+                                                @if ($d->status_kapal == 1)
+                                                    Aktif
+                                                @else
+                                                    NonAktif
+                                                @endif
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('kapal.edit', $d->id_kapal)}}" class="btn btn-info">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </a>
+                                        <button class="btn btn-danger deleteButton" type="button"
+                                        data="{{ route('kapal.destroy', $d->id_kapal) }}"><span
+                                            class="icon text-white">
                                             <i class="fas fa-trash"></i>
                                         </span>
-                                    </a>
-                                </td>
-                            </tr>
+                                    </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>
@@ -109,4 +111,68 @@
 
     </div>
 
+@endsection
+
+
+@section('js')
+    <!-- Page level plugins -->
+    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.3/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var timestamp = '{{ Session::get('success') }}';
+            if (timestamp) {
+                Swal.fire(
+                    'Tersimpan !',
+                    timestamp,
+                    'success'
+                )
+            }
+
+        });
+
+        $(".deleteButton").on('click', function() {
+            var z = $(this).attr('data');
+            Swal.fire({
+                title: 'Apakah anda yakin ingin menghapus data ?',
+                text: "Data yang terhapus tidak akan bisa dikembalikan !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete !'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'DELETE',
+                        url: z,
+                        success: function(res) {
+                            Swal.fire({
+                                title: "Sukses",
+                                text: "Data Sukses Terhapus!",
+                                type: "success",
+                                icon: "success",
+                            }).then((result) => {
+                                // Reload the Page
+                                location.reload();
+                            });
+
+                        }
+                    });
+
+
+                }
+            })
+
+
+        });
+    </script>
 @endsection

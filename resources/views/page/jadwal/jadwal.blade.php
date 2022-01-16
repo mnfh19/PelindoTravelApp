@@ -27,7 +27,7 @@
                     nisi. Curabitur nec diam ut massa auctor maximus nec non sem.</p>
             </div>
             <div class="col-lg-2">
-                <a href="{{ url('add_jadwal') }}" class="btn btn-primary btn-icon-split float-right">
+                <a href="{{ route('jadwal.create') }}" class="btn btn-primary btn-icon-split float-right">
                     <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
                     </span>
@@ -72,38 +72,41 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Dharma Lautan Utama <br>KM. Dharma Kencana 7</td>
+                            @foreach ($get as $d)
+                                <tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$d->nama_kapal}} <br>{{$d->KM}}</td>
 
-                                <td>4 Januari 2022<br>07.00</td>
-                                <td>6 Januari 2022<br>10.00</td>
-                                <td>2 Hari 3 Jam</td>
+                                    <td>{{ \Carbon\Carbon::parse($d->tgl_berangkat)->translatedFormat('l, j F Y') }}<br>{{ \Carbon\Carbon::parse($d->jam_berangkat)->translatedFormat('H:i') }} WIB</td>
+                                    <td>{{ \Carbon\Carbon::parse($d->tgl_tiba)->translatedFormat('l, j F Y') }}<br>{{ \Carbon\Carbon::parse($d->jam_tiba)->translatedFormat('H:i') }} WIB</td>
+                                    <td>{{$d->lama_perjalanan}}</td>
 
-                                <td>Surabaya
-                                    <span class="icon text-grey">
-                                        <i class="fas fa-exchange-alt"></i>
-                                    </span>
-                                    Makasar
-                                </td>
-                                <td><a href="{{url('detail_tiket')}}" class="btn btn-primary">
-                                        <span class="text">
-                                            Detail
+                                    <td>{{$d->rute_awal}}
+                                        <span class="icon text-grey">
+                                            <i class="fas fa-exchange-alt"></i>
                                         </span>
-                                    </a></td>
-                                <td>
-                                    <a href="#" class="btn btn-info">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-pen"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="btn btn-danger">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
+                                        {{$d->rute_akhir}}
+                                    </td>
+                                    <td><a href="{{ route('tiket.show', $d->id_jadwal) }}" class="btn btn-primary">
+                                            <span class="text">
+                                                Detail
+                                            </span>
+                                        </a></td>
+                                    <td>
+                                        <a href="#" class="btn btn-info">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="btn btn-danger">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+
 
                         </tbody>
                     </table>

@@ -1,6 +1,7 @@
 @extends('master')
 
 
+
 @section('content')
     <div class="container-fluid">
 
@@ -14,7 +15,15 @@
 
             <div class="col-lg-12">
 
-
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div><br />
+                @endif
 
                 <!-- Basic Card Example -->
                 <div class="card shadow mb-4">
@@ -22,20 +31,23 @@
                         <h6 class="m-0 font-weight-bold text-primary">Form Tambah</h6>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <form method="POST" action="{{ route('admin.store') }}">
+                            @csrf
                             <div class="form-group">
                                 <label>Username</label>
-                                <input type="text" class="form-control" id="" placeholder="">
+                                <input type="text" class="form-control" name="username" placeholder="">
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" class="form-control" id="" placeholder="">
+                                <input type="password" class="form-control" name="password" id="pass" placeholder="">
+                                <input type="checkbox" onclick="myFunction()"> Show Password
+
                             </div>
                             <div class="form-group">
                                 <label>Status</label>
-                                <select class="form-control" id="">
-                                    <option>Aktif</option>
-                                    <option>NonAktif</option>
+                                <select class="form-control" name="status_admin">
+                                    <option value="1">Aktif</option>
+                                    <option value="0">NonAktif</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary float-right">
@@ -51,4 +63,18 @@
         </div>
 
     </div>
+@endsection
+
+
+@section('js')
+    <script>
+        function myFunction() {
+            var x = document.getElementById("pass");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 @endsection

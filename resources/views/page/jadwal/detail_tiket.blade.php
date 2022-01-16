@@ -31,7 +31,7 @@
                     <span class="icon text-white-50">
                         <i class="fas fa-plus"></i>
                     </span>
-                    <span class="text">Tambah Baru</span>
+                    <span class="text">Tambah Baru </span>
                 </a>
             </div>
 
@@ -40,132 +40,147 @@
 
 
         <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar Tiket Penumpang</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Kelas Tiket</th>
-                                <th>Total Tiket</th>
-                                <th>Jumlah Tiket Tersisa</th>
-                                <th>Harga Tiket Balita</th>
-                                <th>Harga Tiket Dewasa</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>ID</th>
-                                <th>Kelas Tiket</th>
-                                <th>Total Tiket</th>
-                                <th>Jumlah Tiket Tersisa</th>
-                                <th>Harga Tiket Balita</th>
-                                <th>Harga Tiket Dewasa</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>VIP</td>
-                                <td>100</td>
-                                <td>30</td>
-                                <td>Rp 10.000</td>
-                                <td>Rp 30.000</td>
+        @if ($jadwal->jenis_kapal == 'Penumpang' || $jadwal->jenis_kapal == 'Penumpang & Kendaraan')
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Daftar Tiket Penumpang</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kelas Tiket</th>
+                                    <th>Total Tiket</th>
+                                    <th>Jumlah Tiket Tersisa</th>
+                                    <th>Harga Tiket Balita</th>
+                                    <th>Harga Tiket Dewasa</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kelas Tiket</th>
+                                    <th>Total Tiket</th>
+                                    <th>Jumlah Tiket Tersisa</th>
+                                    <th>Harga Tiket Balita</th>
+                                    <th>Harga Tiket Dewasa</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                @foreach ($penumpang as $d)
+                                    <tr>
+                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{$d->kelas_tiket}}</td>
+                                        <td>{{$d->jumlah_tiket}}</td>
+                                        <td>{{$d->sisa_tiket}}</td>
+                                        <td>{{$d->harga_balita}}</td>
+                                        <td>{{$d->harga_dewasa}}</td>
 
 
-                                <td>
-                                    <a href="#" class="btn btn-info">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-pen"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="btn btn-danger">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
+                                        <td>
+                                            <a href="#" class="btn btn-info">
+                                                <span class="icon text-white">
+                                                    <i class="fas fa-pen"></i>
+                                                </span>
+                                            </a>
+                                            <a href="#" class="btn btn-danger">
+                                                <span class="icon text-white">
+                                                    <i class="fas fa-trash"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
-                        </tbody>
-                    </table>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
 
-        <div class="row">
-            <div class="col-lg-12">
-                <a href="{{ url('add_rute') }}" class="btn btn-primary btn-icon-split float-right">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-plus"></i>
-                    </span>
-                    <span class="text">Tambah Baru</span>
-                </a>
+
+        @if ($jadwal->jenis_kapal == 'Penumpang & Kendaraan')
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="{{ url('add_rute') }}" class="btn btn-primary btn-icon-split float-right">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">Tambah Baru</span>
+                    </a>
+                </div>
+
             </div>
+            <div class="my-2"></div>
+        @endif
 
-        </div>
-        <div class="my-2"></div>
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar Tiket Kendaraan</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nama Kendaraan</th>
-                                <th>Total Tiket</th>
-                                <th>Jumlah Tiket Tersisa</th>
-                                <th>Harga</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nama Kendaraan</th>
-                                <th>Total Tiket</th>
-                                <th>Jumlah Tiket Tersisa</th>
-                                <th>Harga</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Sepeda Motor</td>
-                                <td>10</td>
-                                <td>4</td>
-                                <td>Rp 50.000</td>
+        @if ($jadwal->jenis_kapal == 'Kendaraan' || $jadwal->jenis_kapal == 'Penumpang & Kendaraan')
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Daftar Tiket Kendaraan</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Kendaraan</th>
+                                    <th>Total Tiket</th>
+                                    <th>Jumlah Tiket Tersisa</th>
+                                    <th>Harga</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Kendaraan</th>
+                                    <th>Total Tiket</th>
+                                    <th>Jumlah Tiket Tersisa</th>
+                                    <th>Harga</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                @foreach ($kendaraan as $d)
+                                <tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$d->jenis_kendaraan}}</td>
+                                    <td>{{$d->jumlah_tiket}}</td>
+                                    <td>{{$d->sisa_tiket}}</td>
+                                    <td>{{$d->harga}}</td>
 
 
-                                <td>
-                                    <a href="#" class="btn btn-info">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-pen"></i>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="btn btn-danger">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
+                                    <td>
+                                        <a href="#" class="btn btn-info">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="btn btn-danger">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
 
-                        </tbody>
-                    </table>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
+
 
     </div>
 

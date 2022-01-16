@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Pelindo Travel App</title>
 
@@ -56,7 +57,7 @@
             <div class="sidebar-heading">
                 Data Master
             </div>
-            <li class="nav-item  {{ Route::is('admin') ? 'active' : '' }}">
+            <li class="nav-item  {{ Request::segment(1) == 'admin' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('/admin') }}" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Admin</span>
@@ -64,20 +65,20 @@
 
             </li>
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item  {{ Route::is('user') ? 'active' : '' }}">
+            <li class="nav-item  {{ Request::segment(1) == 'user' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('/user') }}" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-user"></i>
                     <span>User</span>
                 </a>
 
             </li>
-            <li class="nav-item  {{ Route::is('kapal') ? 'active' : '' }}">
+            <li class="nav-item {{ Request::segment(1) == 'kapal' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('/kapal') }}" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-anchor"></i>
                     <span>Kapal</span>
                 </a>
             </li>
-            <li class="nav-item  {{ Route::is('rute') ? 'active' : '' }}">
+            <li class="nav-item  {{ Request::segment(1) == 'rute' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('/rute') }}" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-route"></i>
                     <span>Rute</span>
@@ -95,15 +96,15 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item  {{ Route::is('jadwal') ? 'active' : '' }}">
+            <li class="nav-item  {{ Request::segment(1) == 'jadwal' && Request::segment(2) != 'create' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ url('/jadwal') }}" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-calendar"></i>
                     <span>Daftar Jadwal</span>
                 </a>
 
             </li>
-            <li class="nav-item  {{ Route::is('add_jadwal') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('/add_jadwal') }}" aria-controls="collapseTwo">
+            <li class="nav-item  {{ Request::segment(1)."/".Request::segment(2) == 'jadwal/create' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('/jadwal/create') }}" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-calendar-plus"></i>
                     <span>Jadwal Baru</span>
                 </a>
