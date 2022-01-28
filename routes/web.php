@@ -44,6 +44,7 @@ Route::get('/laporan/{awal}/{akhir}/{nama}', 'LaporanController@filtered')->name
 Route::post('/laporan/filteran', 'LaporanController@filteran')->name('laporan');
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
+Route::get('/mail/{mail}', 'UserController@send_verification');
+
+Route::post('/konfirmasiBooking/{id}', 'BookingController@konfirmasiBooking');

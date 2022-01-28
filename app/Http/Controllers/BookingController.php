@@ -7,10 +7,12 @@ use App\BookingModel;
 use App\TiketModel;
 use App\TiketKendaraanModel;
 use App\PenumpangModel;
+use App\PenumpangTempModel;
 use App\JadwalModel;
 use App\KapalModel;
 
 use App\UserModel;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -101,4 +103,126 @@ class BookingController extends Controller
         $get = PenumpangModel::where('id_booking', $id)->get();
         echo json_encode($get);
     }
+
+    public function book(Request $r){
+
+        $date = Carbon::parse($r->tgl_booking)->translatedFormat('dmYhi');
+        $no_booking = $r->id_user.$r->id_tiket.$r->id_tiket_kendaraan.$date;
+
+
+        $book = BookingModel::create([
+            'no_booking' => $no_booking,
+            'id_tiket' => $r->id_tiket,
+            'id_tiket_kendaraan' => $r->id_tiket_kendaraan,
+            'id_user' => $r->id_user,
+            'penumpang_dewasa' => $r->penumpang_dewasa,
+            'penumpang_balita' => $r->penumpang_balita,
+            'harga_total' => $r->harga_total,
+            'tgl_booking' => $r->tgl_booking,
+            'status_booking' => 0,
+            'bukti_pembayaran' => ' ',
+            'status_bayar' => 0,
+        ]);
+
+        if($book){
+            $data = PenumpangTempModel::where('id_user', $r->id_user)->get();
+            foreach ($data as $d) {
+                $random = rand ( 1000 , 9999 );
+                $no_tiket = $date.$random;
+
+                PenumpangModel::create([
+                        'id_booking' => $book->id_booking,
+                        'no_tiket' => $no_tiket,
+                        'jenis_penumpang' => $d->jenis_penumpang,
+                        'nama_penumpang' => $d->nama_penumpang,
+                        'jenis_identitas' => $d->jenis_identitas,
+                        'no_identitas' => $d->no_identitas,
+                        'ttl' => $d->ttl,
+                        'jenis_kelamin' => $d->jenis_kelamin,
+                        'telp' => $d->telp,
+                ]);
+
+
+            }
+
+            PenumpangTempModel::where('id_user', $r->id_user)->delete();
+
+            return response()->json([
+                'respon' => true,
+            ]);
+        }
+
+
+    }
+
+
+    public function accPembayaran(Request $request){
+        if ($request->hasFile('image')) {
+            $name = time() . "_" . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('images'), $name);
+        }
+
+        return $name;
+    }
+
+    public function setPembayaran(Request $r){
+
+        BookingModel::where('id_booking', '=', $r->id_booking)->update(['status_bayar' => 1, 'bukti_pembayaran' => $r->bukti]);
+        return response()->json([
+            'respon' => true,
+            'msg' => 'Berhasil Upload Bukti Pembayaran, silahkan tunggu konfirmasi dari admin'
+        ], 200);
+    }
+
+    public function status($id){
+        $get = BookingModel::where('id_user', $id)
+                            ->orderBy('id_booking', 'desc')->first();
+
+        if(empty($get)){
+            return response()->json($get);
+        }
+
+
+        if($get->id_tiket != 0){
+            $pick = BookingModel::select('booking.*', 'jadwal.*', 'tiket.*', 'kapal.*', 'rute.*')
+                                    ->join('tiket', 'booking.id_tiket', '=', 'tiket.id_tiket')
+                                    ->join('jadwal', 'tiket.id_jadwal', '=', 'jadwal.id_jadwal')
+                                    ->join('kapal', 'jadwal.id_kapal', '=', 'kapal.id_kapal')
+                                    ->join('rute', 'kapal.id_rute', '=', 'rute.id_rute')
+                                    ->where('id_booking', $get->id_booking)->first();
+        }
+
+        if($get->id_tiket_kendaraan != 0){
+            $pick = BookingModel::select('booking.*', 'jadwal.*', 'tiket_kendaraan.*', 'kapal.*', 'rute.*')
+                                    ->join('tiket_kendaraan', 'booking.id_tiket_kendaraan', '=', 'tiket_kendaraan.id_tiket_kendaraan')
+                                    ->join('jadwal', 'tiket_kendaraan.id_jadwal', '=', 'jadwal.id_jadwal')
+                                    ->join('kapal', 'jadwal.id_kapal', '=', 'kapal.id_kapal')
+                                    ->join('rute', 'kapal.id_rute', '=', 'rute.id_rute')
+                                    ->where('id_booking', $get->id_booking)->first();
+        }
+
+        if($get->id_tiket != 0 &&$get->id_tiket_kendaraan != 0){
+            $pick = BookingModel::select('booking.*', 'jadwal.*', 'tiket.*', 'kapal.*', 'rute.*', 'tiket_kendaraan.*')
+                                    ->join('tiket', 'booking.id_tiket', '=', 'tiket.id_tiket')
+                                    ->join('tiket_kendaraan', 'booking.id_tiket_kendaraan', '=', 'tiket_kendaraan.id_tiket_kendaraan')
+                                    ->join('jadwal', 'tiket.id_jadwal', '=', 'jadwal.id_jadwal')
+                                    ->join('kapal', 'jadwal.id_kapal', '=', 'kapal.id_kapal')
+                                    ->join('rute', 'kapal.id_rute', '=', 'rute.id_rute')
+                                    ->where('id_booking', $get->id_booking)->first();
+        }
+
+        return response()->json($pick);
+        // echo $get->status_booking;
+    }
+
+    public function getPenumpang($id){
+        $get = PenumpangModel::where('id_booking', $id)->get();
+        echo json_encode($get);
+    }
+
+    public function konfirmasiBooking($id){
+        BookingModel::where('id_booking', '=', $id)->update(['status_booking' => 2]);
+        return true;
+    }
+
 }

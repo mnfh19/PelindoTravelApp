@@ -78,8 +78,7 @@
                                         @if ($d->status_bayar == 0)
                                             <span class="text-danger">Belum Mengupload Bukti Pembayaran</span>
                                         @else
-                                            <a href="#" data-toggle="modal" data-target="#BuktiModal"
-                                                class="btn btn-primary">
+                                            <a href="#" data="{{ $d->bukti_pembayaran }}" class="btn btn-primary buktiLihat">
                                                 <span class="text">Lihat</span>
                                             </a>
                                         @endif
@@ -101,7 +100,8 @@
 
                                     <td>
                                         @if ($d->status_booking == 0 || $d->status_booking == 1)
-                                            <a href="#" class="btn btn-success">
+                                            <a href="#" class="btn btn-success konfirmasi"
+                                                data="{{ url('konfirmasiBooking/'.$d->id_booking) }}">
                                                 <span class="icon text-white">
                                                     <i class="fas fa-check"></i>
                                                 </span>
@@ -151,7 +151,7 @@
 
                         <tbody>
                             <tr>
-                                <th>Nama Kapal</th>
+                                <th>Nama Pelayaran Kapal</th>
                                 <td colspan="3"><span id="nama_kapal"></span> <br><span id="km"></span> </td>
                             </tr>
                             <tr>
@@ -260,7 +260,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <img src="https://cf.shopee.co.id/file/9cdee7272495a769e52ea9443488f1a0" alt="">
+                    <img id="gambarBukti" style="width: 100%;"  src="{{asset('images/bukti_example.jpg')}}" alt="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -311,6 +311,7 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.3/dist/sweetalert2.all.min.js"></script>
 
 
     <script>
@@ -451,7 +452,8 @@
                                 '<td>' + z + '</td>' +
                                 '<td>' + data[i].nama_penumpang + '</td>' +
                                 '<td>' +
-                                '<a href="#" class="btn btn-primary btn-icon-split"data="'+data[i].id_penumpang+'" >' +
+                                '<a href="#" class="btn btn-primary btn-icon-split"data="' + data[i]
+                                .id_penumpang + '" >' +
                                 '<span class="icon text-white-50" >' +
                                 '<i class="fas fa-print"></i>' +
                                 '</span>' +
@@ -459,7 +461,7 @@
                                 '</a>' +
                                 '</td>' +
                                 '</tr>';
-                                z++;
+                            z++;
                         }
 
                         $("#listPenumpang").append(html);
@@ -467,6 +469,56 @@
                 }
             });
 
+        });
+
+        $(".konfirmasi").on('click', function() {
+            var z = $(this).attr('data');
+            Swal.fire({
+                title: 'Apakah anda yakin ingin Mengkonfirmasi pembayaran ?',
+                text: "Pastikan bukti transfer merupakan data yang asli dan benar !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Konfirmasi !'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'POST',
+                        url: z,
+                        success: function(res) {
+                            Swal.fire({
+                                title: "Sukses",
+                                text: "Pesanan Terkonfirmasi!",
+                                type: "success",
+                                icon: "success",
+                            }).then((result) => {
+                                // Reload the Page
+                                location.reload();
+                            });
+
+                        }
+                    });
+
+
+                }
+            })
+
+
+        });
+
+        $('.buktiLihat').on('click', function(e) {
+            e.preventDefault();
+            $("#BuktiModal").modal("show");
+            var z = $(this).attr('data');
+            // print(z);
+
+            var img = "{{asset('images')}}/"+z;
+
+            $("#gambarBukti").attr("src",img);
         });
     </script>
 @endsection

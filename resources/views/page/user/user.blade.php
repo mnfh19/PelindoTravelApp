@@ -47,6 +47,7 @@
                                 <th>Email</th>
                                 <th>No KTP</th>
                                 <th>TTL</th>
+                                <th>Jenis Kelamin</th>
                                 <th>Telp</th>
                                 <th>Status</th>
                                 {{-- <th>Action</th> --}}
@@ -59,6 +60,7 @@
                                 <th>Email</th>
                                 <th>No KTP</th>
                                 <th>TTL</th>
+                                <th>Jenis Kelamin</th>
                                 <th>Telp</th>
                                 <th>Status</th>
                                 {{-- <th>Action</th> --}}
@@ -72,6 +74,7 @@
                                     <td>{{ $d->email }}</td>
                                     <td>{{ $d->no_ktp }}</td>
                                     <td>{{ $d->ttl }}</td>
+                                    <td>{{ $d->jenis_kelamin }}</td>
                                     <td>{{ $d->telp }}</td>
                                     <td><a href="#" class="btn btn-primary">
                                             <span class="text">

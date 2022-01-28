@@ -62,6 +62,13 @@
                                 <input type="date" class="form-control" name="tanggal" placeholder="">
                             </div>
                             <div class="form-group">
+                                <label>Jenis Kelamin</label>
+                                <select class="form-control" name="jenis_kelamin">
+                                    <option value="Laki - Laki">Laki - Laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>No Telpon</label>
                                 <input type="number" class="form-control" name="telp" placeholder="">
                             </div>

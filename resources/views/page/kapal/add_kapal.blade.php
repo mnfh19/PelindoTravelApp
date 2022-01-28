@@ -37,7 +37,7 @@
                                 <input type="text" class="form-control" name="KM" placeholder="">
                             </div>
                             <div class="form-group">
-                                <label>Nama Kapal</label>
+                                <label>Nama Pelayaran Kapal</label>
                                 <input type="text" class="form-control" name="nama_kapal" placeholder="">
                             </div>
                             <div class="form-group">

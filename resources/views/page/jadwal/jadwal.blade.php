@@ -50,7 +50,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nama Kapal</th>
+                                <th>Nama Pelayaran Kapal</th>
                                 <th>Tanggal Berangkat</th>
                                 <th>Tanggal Tiba</th>
                                 <th>Lama Perjalanan</th>
@@ -62,7 +62,7 @@
                         <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>Nama Kapal</th>
+                                <th>Nama Pelayaran Kapal</th>
                                 <th>Tanggal Berangkat</th>
                                 <th>Tanggal Tiba</th>
                                 <th>Lama Perjalanan</th>

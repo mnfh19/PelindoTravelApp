@@ -38,7 +38,7 @@
                                 <input type="text" class="form-control" name="KM" placeholder="" value="{{$kapal->KM}}">
                             </div>
                             <div class="form-group">
-                                <label>Nama Kapal</label>
+                                <label>Nama Pelayaran Kapal</label>
                                 <input type="text" class="form-control" name="nama_kapal" placeholder="" value="{{$kapal->nama_kapal}}">
                             </div>
                             <div class="form-group">

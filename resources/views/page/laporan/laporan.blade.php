@@ -115,7 +115,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Kapal</th>
+                                <th>Nama Pelayaran Kapal</th>
                                 <th>Nama KM</th>
                                 <th>Nomor Booking</th>
                                 <th>Rute</th>
@@ -131,7 +131,7 @@
                         <tfoot>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Kapal</th>
+                                <th>Nama Pelayaran Kapal</th>
                                 <th>Nama KM</th>
                                 <th>Nomor Booking</th>
                                 <th>Rute</th>

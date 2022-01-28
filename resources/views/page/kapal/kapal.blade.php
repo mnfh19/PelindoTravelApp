@@ -43,7 +43,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>KM</th>
-                                <th>Nama Kapal</th>
+                                <th>Nama Pelayaran Kapal</th>
                                 <th>Rute</th>
                                 <th>Jenis Kapal</th>
                                 <th>Muatan</th>
@@ -55,7 +55,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>KM</th>
-                                <th>Nama Kapal</th>
+                                <th>Nama Pelayaran Kapal</th>
                                 <th>Rute</th>
                                 <th>Jenis Kapal</th>
                                 <th>Muatan</th>
